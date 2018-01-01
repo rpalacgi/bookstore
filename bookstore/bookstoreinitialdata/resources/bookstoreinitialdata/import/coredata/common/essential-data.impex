@@ -1,14 +1,3 @@
-# -----------------------------------------------------------------------
-# [y] hybris Platform
-#
-# Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
-# All rights reserved.
-#
-# This software is the confidential and proprietary information of SAP
-# ("Confidential Information"). You shall not disclose such Confidential
-# Information and shall use it only in accordance with the terms of the
-# license agreement you entered into with SAP.
-# -----------------------------------------------------------------------
 # Import essential data for the Accelerator
 #
 # Includes:
@@ -21,9 +10,10 @@
 # * User Groups
 # * DistanceUnits for Storelocator
 # * MediaFolders
-# * MediaFormats
+# * MediaFormats                               s
 # * Tax & Tax Groups
 # * Jobs
+#% impex.setLocale(Locale.ENGLISH);
 
 # Languages
 INSERT_UPDATE Language;isocode[unique=true];fallbackLanguages(isocode);active[default=true]
@@ -39,36 +29,9 @@ INSERT_UPDATE Currency;isocode[unique=true];conversion;digits;symbol
 ;USD;1,4;2;$
 ;JPY;120;0;¥
 
-# SiteMap Language Currencies
-INSERT_UPDATE SiteMapLanguageCurrency;&siteMapLanguageCurrency;language(isoCode)[unique=true];currency(isocode)[unique=true];
-;enUsd;en;USD
-;enJpy;en;JPY
-;enGbp;en;GBP
-;enEur;en;EUR
-;jaUsd;ja;USD
-;jaJpy;ja;JPY
-;jaGbp;ja;GBP
-;jaEur;ja;EUR
-;deUsd;de;USD
-;deJpy;de;JPY
-;deGbp;de;GBP
-;deEur;de;EUR
-;zhUsd;zh;USD
-;zhJpy;zh;JPY
-;zhGbp;zh;GBP
-;zhEur;zh;EUR
-
 # Vendor
 INSERT_UPDATE Vendor;code[unique=true];name
 ;default;Default Vendor
-
-# Warehouse
-INSERT_UPDATE Warehouse;code[unique=true];name;vendor(code)[default=default];default[default=true]
-;default;Default Warehouse;
-;warehouse_s;Warehouse South;
-;warehouse_e;Warehouse East;
-;warehouse_w;Warehouse West;
-;warehouse_n;Warehouse North;
 
 # Disable preview for email pages
 UPDATE CMSPageType;code[unique=true];previewDisabled
@@ -98,6 +61,10 @@ INSERT_UPDATE MediaFormat;qualifier[unique=true]
 ;96Wx96H
 ;65Wx65H
 ;30Wx30H
+;mobile
+;tablet
+;desktop
+;widescreen
 
 # Tax & Tax Groups
 INSERT_UPDATE UserTaxGroup;code[unique=true]
@@ -126,3 +93,27 @@ INSERT_UPDATE Tax;code[unique=true];value;currency(isocode)
 INSERT_UPDATE ServicelayerJob;code[unique=true];springId[unique=true]
 ;cartRemovalJob;cartRemovalJob
 ;siteMapMediaJob;siteMapMediaJob
+
+INSERT_UPDATE PatternConstraint;active;descriptor(enclosingType(code),qualifier);id[unique=true];qualifier;target;type(code);regexp;flags(code);
+;true;Book:ISBN13;ISBN13SizeValidator;ISBN13;my.bookstore.core.model.BookModel;Book;\d{13};CASE_INSENSITIVE
+
+INSERT_UPDATE DynamicConstraint;active;id[unique=true];target;type(code);expression;language(code);
+"#% beforeEach:
+import my.bookstore.core.setup.CoreSystemSetup;
+import org.apache.commons.io.IOUtils;
+import java.io.InputStream;
+import java.io.IOException;
+
+      try
+		{
+			InputStream is=CoreSystemSetup.class.getResourceAsStream(""/bookstorecore/import/common/dynamicValidationScript.java"");
+			line.put(Integer.valueOf(5),IOUtils.toString(is,""utf-8""));
+
+  		}catch (IOException e){
+			e.printStackTrace();
+		}
+"
+;true;ISBN10FormatValidator;my.bookstore.core.model.BookModel;Book;"";BEANSHELL;
+#% beforeEach:end
+
+$de.hybris.platform.core.Registry.getApplicationContext().getBean(de.hybris.platform.validation.services.ValidationService.class).reloadValidationEngine()
