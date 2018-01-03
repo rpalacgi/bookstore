@@ -287,17 +287,17 @@ INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];positi
 
 ###### Bookstore Order Expired Page ######
 
-# CMSParagraphComponent 
+# CMSParagraphComponent
 INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;;;;
 ;;orderExpiredMenuParagraph;Order Expired Paragraph;OrderExpiredMenuParagraph;;;;
 ;;orderExpiredTextParagraph;Order Expired Paragraph;OrderExpiredTextParagraph;;;;
- 
-# ContentSlot 
+
+# ContentSlot
 INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef);;;
 ;;Section2ASlot-OrderExpired;Section2A Slot for Order Expired Page;true;OrderExpiredMenuParagraph;;;
 ;;Section2BSlot-OrderExpired;Section2B Slot for Order Expired Page;true;OrderExpiredTextParagraph;;;
- 
-# ContentSlotForPage 
+
+# ContentSlotForPage
 INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='orderExpired'];contentSlot(uid,$contentCV)[unique=true];;;
 ;;Section2A-OrderExpired;Section2A;;Section2ASlot-OrderExpired;;;
 ;;Section2B-OrderExpired;Section2B;;Section2BSlot-OrderExpired;;;
