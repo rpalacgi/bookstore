@@ -19,6 +19,10 @@ $siteResource=jar:my.bookstore.initialdata.setup.InitialDataSystemSetup&/booksto
 $productResource=jar:my.bookstore.initialdata.setup.InitialDataSystemSetup&/bookstoreinitialdata/import/sampledata/productCatalogs/$productCatalog
 $jarResourceCms=jar:my.bookstore.initialdata.setup.InitialDataSystemSetup&/bookstoreinitialdata/import/sampledata/cockpits/cmscockpit
 
+# Load the storefront context root config param
+$storefrontContextRoot=$config-storefrontContextRoot
+$lang=en
+$category=category(code, $productCV)
 
 # Site Logo
 INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];altText;folder(qualifier)[default='images']
@@ -79,6 +83,51 @@ INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url
 ;;AccountManagePaymentDetailsLink;AccountManagePaymentDetailsLink;/my-account/payment-details;AccountManagePaymentDetailsLink;AccountManagePaymentDetailsLink;;;;
 ;;AccountOrderHistoryLink;AccountOrderHistoryLink;/my-account/orders;AccountOrderHistoryLink;AccountOrderHistoryLink;;;;
 ;;AccountViewOrderHistoryLink;AccountViewOrderHistoryLink;/my-account/orders;AccountViewOrderHistoryLink;AccountViewOrderHistoryLink;;;;
+
+#Exercise for javainasimpleway1
+# Import config properties into impex macros
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;;;;content;
+;;welcomeInfoComponent;Welcome information;welcomeInfoComponent;;;;welcome to home page;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='LandingPage2Template'];validComponentTypes(code);compTypeGroup(code)
+;welcomeInfo;;;wide
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active
+;;welcomeInfoSlot;welcome info slot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='LandingPage2Template'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;WelcomeInfo-LandingPage2;welcomeInfo;;welcomeInfoSlot;true
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(uid,$contentCV)
+;;welcomeInfoSlot;welcomeInfoComponent
+
+#Exercise for javainasimpleway2
+#Custom offers components
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&linkRef;&componentRef;target(code)[default='sameWindow'];$category;
+;;MenOfferLink;Men Offer Link;/MenOfferLink;MenOfferLink;MenOfferLink;;;;
+;;WomenOfferLink;Women Offer Link;/WomenOfferLink;WomenOfferLink;WomenOfferLink;;;;
+;;KidsOfferLink;Kids Offer Link;/KidsOfferLink;KidsOfferLink;KidsOfferLink;;;;
+
+#Impex for Media
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];&imageRef;folder(qualifier)[default='images'];altText
+;;customOffersMedia;$siteResource/images/banners/homepage/offers.jpeg;;offers.jpeg;;
+
+#Impex for CustomOffersComponent
+INSERT_UPDATE CustomOffersComponent;$contentCV[unique=true];uid[unique=true];name;headerText[lang=$lang];footerText[lang=$lang];offerImage(code);&componentRef;offerImageLink(&linkRef);
+;;summerOfferComponent;Summer offer Component;"up to 70 % off";"Grab this offer on all summer<br>Collections";customOffersMedia;summerOfferComponent;MenOfferLink,WomenOfferLink,KidsOfferLink
+
+#Impex for defining content slot name
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='LandingPage2Template'];validComponentTypes(code);compTypeGroup(code)
+;SummerOffersSlotName;;CustomOffersComponent
+
+#impex for defining content slot
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;summerOfferContentSlot;Summer offer slot;true;summerOfferComponent
+
+#impex for defining content slot page
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='homepage'];contentSlot(uid,$contentCV)[unique=true]
+;;summerOfferslotforpage-Homepage;SummerOffersSlotName;;summerOfferContentSlot
 
 
 # Lightbox Banner for Mini Cart
@@ -222,23 +271,11 @@ UPDATE ContentPage;$contentCV[unique=true];uid[unique=true];linkComponents(&link
 ;;login;LoginLink
 
 
-
-
 ###### Bookstore Homepage ######
 
 
 INSERT_UPDATE ProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;products(code,$productCV);scroll(code);popup;&componentRef
 ;;NewBookstoreHomepageProductCarouselComponent;Bookstore Homepage Product Carousel;9439522259,8685677009,8679478989,8423207609,7313785739,6265644009,6493374189,6824238759,5650539359,5536152009,4729720539;allVisible;false;NewBookstoreHomepageProductCarouselComponent
-
-INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
-;;Section1Slot-Homepage;Section1 Slot for Homepage;true;NewBookstoreHomepageProductCarouselComponent
-;;Section2ASlot-Homepage;Section2A Slot for Homepage;true;
-;;Section2BSlot-Homepage;Section2B Slot for Homepage;true;
-;;Section2CSlot-Homepage;Section2C Slot for Homepage;true;
-;;Section3Slot-Homepage;Section3 Slot for Homepage;true;
-;;Section4Slot-Homepage;Section4 Slot for Homepage;true;
-;;Section5Slot-Homepage;Section5 Slot for Homepage;true;NewBookstoreHomepageProductCarouselComponent
-
 
 INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
 ;;NoSearchResultsParagraphComponent;No Search Results Paragraph Component;NoSearchResultsParagraphComponent
@@ -267,6 +304,19 @@ INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];positi
 ;;CenterLeftContentSlotForCartPage;CenterLeftContentSlot;;CenterLeftContentSlot-cartPage
 ;;CenterRightContentSlotForCartPage;CenterRightContentSlot;;CenterRightContentSlot-cartPage
 ;;BottomContentSlotForCartPage;BottomContentSlot;;BottomContentSlot-cartPage
+
+
+#Update Homepage with SimpleBannerComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+#;;Section1Slot-Homepage;Section1 Slot for Homepage;true;NewBookstoreHomepageProductCarouselComponent
+;;Section1Slot-Homepage;Section1 Slot for Homepage;true;NextDayDeliveryBanner120
+;;Section2ASlot-Homepage;Section2A Slot for Homepage;true;
+;;Section2BSlot-Homepage;Section2B Slot for Homepage;true;
+;;Section2CSlot-Homepage;Section2C Slot for Homepage;true;
+;;Section3Slot-Homepage;Section3 Slot for Homepage;true;
+;;Section4Slot-Homepage;Section4 Slot for Homepage;true;
+;;Section5Slot-Homepage;Section5 Slot for Homepage;true;NewBookstoreHomepageProductCarouselComponent
 
 ###### Bookstore Checkout Login Page ######
 

@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at 2-Jan-2018 5:31:57 PM                       ---
+ * --- Generated at 12-Jan-2018 1:04:45 AM                      ---
  * ----------------------------------------------------------------
  */
 package my.bookstore.core.constants;
@@ -21,6 +21,7 @@ public class GeneratedBookstoreCoreConstants
 		public static final String APPARELSTYLEVARIANTPRODUCT = "ApparelStyleVariantProduct".intern();
 		public static final String BOOK = "Book".intern();
 		public static final String CAR = "Car".intern();
+		public static final String CUSTOMOFFERSCOMPONENT = "CustomOffersComponent".intern();
 		public static final String ELECTRONICSCOLORVARIANTPRODUCT = "ElectronicsColorVariantProduct".intern();
 		public static final String FUELENUMERATION = "FuelEnumeration".intern();
 		public static final String RENTAL = "Rental".intern();

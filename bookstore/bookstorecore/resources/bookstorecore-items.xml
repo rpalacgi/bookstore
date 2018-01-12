@@ -13,6 +13,9 @@
 			autocreate="true" generate="true" type="list" />
 		<collectiontype code="SwatchColorSet" elementtype="SwatchColorEnum"
 			autocreate="true" generate="true" type="set" />
+		<collectiontype code="CustomOfferLinksList" elementtype="CMSLinkComponent" 
+		    autocreate="true" generate="true" type="list" />
+			
 	</collectiontypes>
 
 
@@ -116,6 +119,31 @@
 
 
 	<itemtypes>
+	
+		<itemtype code="CustomOffersComponent" extends="SimpleCMSComponent" generate="true" autocreate="true"
+            jaloclass="org.training.core.jalo.CustomOffersComponent">
+            <description>Used to display offers on homepage</description>
+                <attributes>
+                    <attribute type="localized:java.lang.String" qualifier="headerText">
+                        <modifiers read="true" write="true" optional="false" />
+                        <persistence type="property" />
+                    </attribute>
+                    <attribute type="localized:java.lang.String" qualifier="footerText">
+                        <modifiers read="true" write="true" optional="false" />
+                        <persistence type="property" />
+                    </attribute>
+                    <attribute type="Media" qualifier="offerImage">
+                        <modifiers read="true" write="true" optional="false" />
+                        <persistence type="property" />
+                    </attribute>
+                    <attribute type="CustomOfferLinksList" qualifier="offerImageLink">
+                        <persistence type="property" />
+                        <description>List of CMS Link Component</description>
+                        <modifiers read="true" write="true" />
+                    </attribute>
+                </attributes>
+        </itemtype>
+        
 		<itemtype code="Car" extends="Product" autocreate="true"
 			generate="true">
 			<deployment table="Car" typecode="20100" />

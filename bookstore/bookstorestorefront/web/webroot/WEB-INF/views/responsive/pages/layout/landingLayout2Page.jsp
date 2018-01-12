@@ -4,9 +4,16 @@
 <%@ taglib prefix="cms" uri="http://hybris.com/tld/cmstags"%>
 
 <template:page pageTitle="${pageTitle}">
+     <div class="welcomeInfo">
+    	<cms:pageSlot position="welcomeInfo" var="feature" element="div" class="welcomeInfo">
+                <cms:component component="${feature}" />
+    	</cms:pageSlot>
+    </div>
+    
     <cms:pageSlot position="Section1" var="feature">
         <cms:component component="${feature}" />
     </cms:pageSlot>
+    
     <div class="row no-margin">
         <div class="col-xs-12 col-md-6 no-space">
             <cms:pageSlot position="Section2A" var="feature" element="div" class="row no-margin">
@@ -36,5 +43,9 @@
     <cms:pageSlot position="Section5" var="feature" element="div">
         <cms:component component="${feature}" element="div" class="yComponentWrapper"/>
     </cms:pageSlot>
+    
+    <cms:pageSlot position="SummerOffersSlotName" var="feature" element="div" class="span-24 section5 cms_disp-img_slot">
+		<cms:component component="${feature}" />
+	</cms:pageSlot>
 
 </template:page>

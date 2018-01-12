@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at 2-Jan-2018 5:31:57 PM                       ---
+ * --- Generated at 12-Jan-2018 1:04:45 AM                      ---
  * ----------------------------------------------------------------
  */
 package my.bookstore.core.jalo;
@@ -40,6 +40,7 @@ import my.bookstore.core.jalo.Car;
 import my.bookstore.core.jalo.ElectronicsColorVariantProduct;
 import my.bookstore.core.jalo.Rental;
 import my.bookstore.core.jalo.RewardStatusLevelConfiguration;
+import org.training.core.jalo.CustomOffersComponent;
 
 /**
  * Generated class for type <code>BookstoreCoreManager</code>.
@@ -405,6 +406,32 @@ public abstract class GeneratedBookstoreCoreManager extends Extension
 	public Car createCar(final Map attributeValues)
 	{
 		return createCar( getSession().getSessionContext(), attributeValues );
+	}
+	
+	public CustomOffersComponent createCustomOffersComponent(final SessionContext ctx, final Map attributeValues)
+	{
+		try
+		{
+			ComposedType type = getTenant().getJaloConnection().getTypeManager().getComposedType( BookstoreCoreConstants.TC.CUSTOMOFFERSCOMPONENT );
+			return (CustomOffersComponent)type.newInstance( ctx, attributeValues );
+		}
+		catch( JaloGenericCreationException e)
+		{
+			final Throwable cause = e.getCause();
+			throw (cause instanceof RuntimeException ?
+			(RuntimeException)cause
+			:
+			new JaloSystemException( cause, cause.getMessage(), e.getErrorCode() ) );
+		}
+		catch( JaloBusinessException e )
+		{
+			throw new JaloSystemException( e ,"error creating CustomOffersComponent : "+e.getMessage(), 0 );
+		}
+	}
+	
+	public CustomOffersComponent createCustomOffersComponent(final Map attributeValues)
+	{
+		return createCustomOffersComponent( getSession().getSessionContext(), attributeValues );
 	}
 	
 	public ElectronicsColorVariantProduct createElectronicsColorVariantProduct(final SessionContext ctx, final Map attributeValues)

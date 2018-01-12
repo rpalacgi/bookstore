@@ -18,19 +18,26 @@
 					<cockpit code="MiniCart" />
 				</td>
 			</tr>
+			
 			<tr>
 				<td colspan="5" class="structureViewSection">
 					<cockpit code="NavigationBar" />
 				</td>
 			</tr>
+			
 			<tr>
 				<td colspan="5" class="structureViewSection">
 					<cockpit code="BottomHeaderSlot"/>
 				</td>
 			</tr>
-			<tr>
+			<!--<tr>
 				<td colspan="5" style="vertical-align:top;" class="structureViewSection">
 					<cockpit code="Section1" />
+				</td>
+			</tr>-->
+			<tr>
+				<td colspan="5" class="structureViewSection">
+					<cockpit code="welcomeInfo" />
 				</td>
 			</tr>
 			<tr>

@@ -1,4 +1,8 @@
-
+.welcomeInfo {
+    font-weight: bold;
+    margin-right: 5px;
+    color: #0000ff;
+}
 
 
 .clear_fix:after {
